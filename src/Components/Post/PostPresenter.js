@@ -3,7 +3,14 @@ import styled from "styled-components";
 import TextareaAutosize from "react-autosize-textarea";
 import FatText from "../FatText";
 import Avatar from "../Avatar";
-import { HeartFull, HeartEmpty, Comment as CommentIcon } from "../Icons";
+import {
+  HeartFull,
+  HeartEmpty,
+  Comment as CommentIcon,
+  Edit,
+  Delete
+} from "../Icons";
+import { Modal } from "react-bootstrap";
 
 const Post = styled.div`
   ${props => props.theme.whiteBox};
@@ -38,7 +45,7 @@ const Files = styled.div`
   flex-shrink: 0;
 `;
 
-const File = styled.div`
+const File = styled.img`
   max-width: 100%;
   width: 100%;
   height: 600px;
@@ -112,7 +119,10 @@ export default ({
   toggleLike,
   onKeyPress,
   comments,
-  selfComments
+  selfComments,
+  show,
+  handleShow,
+  handleClose
 }) => (
   <Post>
     <Header>
@@ -144,12 +154,24 @@ export default ({
             <Comment key={comment.id}>
               <FatText text={comment.user.username} />
               {comment.text}
+              <Button style={{ marginLeft: "20px" }} onClick={handleShow}>
+                <Edit />
+              </Button>
+              <Button>
+                <Delete />
+              </Button>
             </Comment>
           ))}
           {selfComments.map(comment => (
             <Comment key={comment.id}>
               <FatText text={comment.user.username} />
               {comment.text}
+              <Button style={{ marginLeft: "20px" }} onClick={handleShow}>
+                <Edit />
+              </Button>
+              <Button>
+                <Delete />
+              </Button>
             </Comment>
           ))}
         </Comments>
@@ -162,5 +184,26 @@ export default ({
         onChange={newComment.onChange}
       />
     </Meta>
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Edit comments</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {comments.map(comment => (
+          <Comment key={comment.id}>{comment.text}</Comment>
+        ))}
+        {selfComments.map(comment => (
+          <Comment key={comment.id}>{comment.text}</Comment>
+        ))}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+        <Button variant="primary" onClick={handleClose}>
+          Save Changes
+        </Button>
+      </Modal.Footer>
+    </Modal>
   </Post>
 );
