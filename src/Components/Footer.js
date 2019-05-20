@@ -66,6 +66,6 @@ export default () => (
         <Link href="#">language</Link>
       </ListItem>
     </List>
-    <Copyright>schoolclone {new Date().getFullYear()} &copy;</Copyright>
+    <Copyright>schoolgram {new Date().getFullYear()} &copy;</Copyright>
   </Footer>
 );
